@@ -7,10 +7,10 @@ struct router{
     int **adj;
 };
 
-Router ROUTERinit(int N){
+Router ROUTERinit(int N, int M){
     Router R = malloc(sizeof(struct router));
     R -> N = N;
-    R -> M = 0;
+    R -> M = M;
     R -> adj = MATRIXinit(N,N,0);
     return R;
 }
@@ -18,9 +18,20 @@ Router ROUTERinit(int N){
 
 int main(int argc, char const *argv[])
 {
-    int router[N][M];
-    FILE *f;
-    f =fopen(filename, "r");
+    int N,M;
+    
+
+
+    scanf("%d", &N);
+    scanf("%d", &M);
     if ((N < 2) && (M < 1)){ fprintf(stderr,"Invalid number");}
+    ROUTERinit(N,M);
+
     return 0;
+}
+
+int **MATRIXinit(int lines, int columns, int value){
+    int matrix [lines][columns];
+    memset(matrix, 0, sizeof(matrix[0][0]) * lines * columns);
+    return matrix;
 }
