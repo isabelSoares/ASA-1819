@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ROUTER.h"
+
 
 typedef struct node *link;
 Network NETWORKinit(int N, int M);
 link InsertBegin(int v, link head);
 void NETWORKinsertM(Network Net, int r1, int r2);
-//int** MATRIXinit(int lines, int columns, int value);
-void NETWORKinsert(Network Net, int r1, int r2);
+
 
 
 struct node{
@@ -15,10 +14,10 @@ struct node{
     link next;
 };
 
-struct network{
+typedef struct network{
     int N, M;
     link *adj;
-};
+}Network;
 
 int main(int argc, char const *argv[])
 {
@@ -40,7 +39,7 @@ int main(int argc, char const *argv[])
 
 Network NETWORKinit(int N, int M) {
     int i;
-    Network Net = malloc(sizeof(struct network));
+    Network Net = (Network*)malloc(sizeof(struct network));
     Net->N = N;
     Net->M = 0;
     Net->adj = malloc(N * sizeof(link));
@@ -61,16 +60,21 @@ void NETWORKinsertM(Network Net, int r1, int r2) {
     Net->adj[r2] = InsertBegin(r1, Net->adj[r2]);
 }
 
-void NETWORKinsert(Network Net, int r1, int r2) {
-    if (Net->adj[r1][r2] == 0)
-    Net->adj[r1][r2] = 1;
-    Net->adj[r2][r1] = 1;
+
+int UGRAPHcc(Network Net, int cc[]) { 
+   int id = 0;
+   int vertices = Net->N;
+   for (int v = 0; v < vertices; ++v) 
+      cc[v] = -1;
+   for (int v = 0; v < vertices; ++v)
+      if (cc[v] == -1) 
+         dfsRcc(Net, cc, v, id++);
+   return id;
 }
 
-/*int** MATRIXinit(int lines, int columns, int value){
-    int matrix[lines][columns];
-    memset(matrix, 0, sizeof(matrix[0][0]) * lines * columns);
-    return matrix;
-}*/
-
-
+static void dfsRcc( Network Net, int cc[], int v, int id){ 
+   cc[v] = id;
+   for (link a = Net->adj[v]; a != NULL; a = a->next)
+      if (cc[a->v] == -1) 
+         dfsRcc( Net, cc, a->v, id); 
+}
