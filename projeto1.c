@@ -37,7 +37,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-Network NETWORKinit(int N, int M) {
+Network *NETWORKinit(int N, int M) {
     int i;
     Network Net = (Network*)malloc(sizeof(struct network));
     Net->N = N;
@@ -55,7 +55,7 @@ link InsertBegin(int v, link head) {
     return x;
 }
 
-void NETWORKinsertM(Network Net, int r1, int r2) {
+void NETWORKinsertM(Network *Net, int r1, int r2) {
     Net->adj[r1] = InsertBegin(r2, Net->adj[r1]);
     Net->adj[r2] = InsertBegin(r1, Net->adj[r2]);
 }
