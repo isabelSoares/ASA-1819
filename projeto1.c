@@ -1,24 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ROUTER.h"
+
 
 typedef struct node *link;
 Network NETWORKinit(int N, int M);
 link InsertBegin(int v, link head);
 void NETWORKinsertM(Network Net, int r1, int r2);
-//int** MATRIXinit(int lines, int columns, int value);
-void NETWORKinsert(Network Net, int r1, int r2);
-
 
 struct node{
     int v;
     link next;
 };
 
-struct network{
+typedef struct Network{
     int N, M;
     link *adj;
-};
+}Network;
 
 int main(int argc, char const *argv[])
 {
@@ -38,9 +35,9 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-Network NETWORKinit(int N, int M) {
+Network *NETWORKinit(int N, int M) {
     int i;
-    Network Net = malloc(sizeof(struct network));
+    Network *Net = (Network*) malloc(sizeof(struct Network));
     Net->N = N;
     Net->M = 0;
     Net->adj = malloc(N * sizeof(link));
@@ -56,21 +53,9 @@ link InsertBegin(int v, link head) {
     return x;
 }
 
-void NETWORKinsertM(Network Net, int r1, int r2) {
+void NETWORKinsertM(Network *Net, int r1, int r2) {
     Net->adj[r1] = InsertBegin(r2, Net->adj[r1]);
     Net->adj[r2] = InsertBegin(r1, Net->adj[r2]);
 }
-
-void NETWORKinsert(Network Net, int r1, int r2) {
-    if (Net->adj[r1][r2] == 0)
-    Net->adj[r1][r2] = 1;
-    Net->adj[r2][r1] = 1;
-}
-
-/*int** MATRIXinit(int lines, int columns, int value){
-    int matrix[lines][columns];
-    memset(matrix, 0, sizeof(matrix[0][0]) * lines * columns);
-    return matrix;
-}*/
 
 
