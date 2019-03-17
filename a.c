@@ -37,11 +37,9 @@ Network NETWORKinit(int V) {
    return G;
 }
 
-void NETWORKinsertArc(Network G, int v, int w) { 
-   for (link a = G->adj[v]; a != NULL; a = a->next) 
-      if (a->w == w) return;
-   G->adj[v-1] = NEWnode( w-1, G->adj[v-1]);
-   G->adj[w-1] = NEWnode( v-1, G->adj[w-1]);
+void NETWORKinsertArc(Network G, int v, int w) {
+   G->adj[v-1] = NEWnode(w-1, G->adj[v-1]);
+   G->adj[w-1] = NEWnode(v-1, G->adj[w-1]);
    G->A++;
 }
 
@@ -111,6 +109,7 @@ void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low
 
 void BrokenRouters(Network G){
     int i;
+    int numbrokenrouters = 0;
     int size = G->V;
     int des[size], visitado[size], pai[size], low[size], routerspartidos[size];
     for(i=0;i<size;i++){
@@ -118,25 +117,28 @@ void BrokenRouters(Network G){
         pai[i]=-1;
         routerspartidos[i]=0;
     }
-    for(i=0;i<size;i++){
-      if(visitado[i]==0){
+    for(i=0;i<size;i++)
+      if(visitado[i]==0)
          BrokenRoutersAux(G,i,visitado,des,pai,low,routerspartidos);
-        }
-    }
+
     printf("\n");
     int flag=0;
-    printf("Routers que podem causar sub-redes: \n");
+    //printf("Routers que podem causar sub-redes: \n");
     for(i=0;i<size;i++){
          if(routerspartidos[i]==1){
 	         flag=1;
-	         printf("Router: %d\n",i);
+	         //printf("Router: %d\n",i);
+            numbrokenrouters++;
 	      }
       }
     if(flag==0)
 	printf("Nenhum router\n");
+   printf("%d\n", numbrokenrouters);
 }
 
-void identificadores(Network G, int *cc, int numCC, int *ids){
+   
+
+void subnetID(Network G, int *cc, int numCC, int *ids){
    int i, j;
    int routermax = 0;
    for(j=0; j < numCC ;j++)
@@ -156,50 +158,56 @@ int maximum(int * array, int size){
   }
 }
 
-void countingSort(int* array, int size){
-  int curr = 0;
-  int max = maximum(array, size);
-  int * counting_array = calloc(max, sizeof(int));
-
-  for(curr = 0; curr < size; curr ++){
-    counting_array[array[curr]]++;
-  }
-
-  int num = 0;
-  curr = 0;
-
-  while(curr <= size){
-    while(counting_array[num] > 0){
-      array[curr] = num;
-      counting_array[num]--;
-      curr++;
-      if(curr > size){ break; }
+void countingSort(int arr[], int n, int exp) 
+{ 
+    int output[n];
+    int i, count[10] = {0}; 
+    for (i = 0; i < n; i++) 
+        count[ (arr[i]/exp)%10 ]++; 
+    for (i = 1; i < 10; i++) 
+        count[i] += count[i - 1]; 
+    for (i = n - 1; i >= 0; i--) 
+    { 
+        output[count[ (arr[i]/exp)%10 ] - 1] = arr[i]; 
+        count[ (arr[i]/exp)%10 ]--; 
     }
-    num++;
-  }
-}
+    for (i = 0; i < n; i++) 
+        arr[i] = output[i]; 
+} 
+
+void radixsort(int arr[], int n) 
+{ 
+    int m = maximum(arr, n); 
+    for (int e = 1; m/e > 0; e *= 10) 
+        countingSort(arr, n, e); 
+} 
 
 
 int main(int argc, char const *argv[]){
-   Network G = NETWORKinit(6);
-   NETWORKinsertArc(G,1,4);
-   NETWORKinsertArc(G,2,3);
-
-
+   int N,M,r1,r2;
+   scanf("%d", &N);
+   scanf("%d", &M);
+   if ((N < 2) && (M < 1)){ fprintf(stderr,"Invalid number");}
+   Network G = NETWORKinit(N);
    int i;
-   int cc[G->V];
+   for (i=0; i < M; i++){
+      scanf("%d", &r1);
+      scanf("%d", &r2);
+      NETWORKinsertArc(G,r1,r2);
+   }
+   int cc[N];
    int numCC = NETWORKcc(G,cc);
-   printf("nº de subredes: %d\n", numCC);
-   for (i=0; i < G->V; i++)
-      printf("%d\n", cc[i]);
-   int subredes[numCC];
-   printf("\n");
-   identificadores(G,cc,numCC,subredes);
-   countingSort(subredes,numCC);
+   printf("%d\n", numCC);
+   /*for (i=0; i < N; i++)
+      printf("%d\n", cc[i]);*/
+   int subnetworks[numCC];
+   subnetID(G,cc,numCC,subnetworks);
+   radixsort(subnetworks,numCC);
+   //printf("Identificadores das subredes:");
    for (i=0; i <numCC; i++)
-      printf("%d\n", subredes[i]);
+      printf("%d ", subnetworks[i]+1);
 
-   printNETWORK(G);
+   //printNETWORK(G);
    BrokenRouters(G);
    return 0;
 }
