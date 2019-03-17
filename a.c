@@ -211,5 +211,3 @@ int main(int argc, char const *argv[]){
    BrokenRouters(G);
    return 0;
 }
-
-//FALTA CONSEGUIR COLOCAR O GRAFO A COMEÇAR EM 1
