@@ -45,11 +45,11 @@ void NETWORKinsertArc(Network G, int v, int w) {
    G->A++;
 }
 
-static void dfsRcc( Network G, int *cc, int v, int id){ 
+void dfsRcc( Network G, int *cc, int v, int id){ 
    cc[v] = id;
    for (link a = G->adj[v]; a != NULL; a = a->next)
       if (cc[a->w] == -1) 
-         dfsRcc( G, cc, a->w, id); 
+         dfsRcc(G, cc, a->w, id); 
 }
 
 int NETWORKcc( Network G, int *cc){ 
@@ -136,19 +136,69 @@ void BrokenRouters(Network G){
 	printf("Nenhum router\n");
 }
 
+void identificadores(Network G, int *cc, int numCC, int *ids){
+   int i, j;
+   int routermax = 0;
+   for(j=0; j < numCC ;j++)
+      for (i=0; i<G->V; i++){
+         if (cc[i] == j)
+            ids[j] = i;
+      }
+}
+
+int maximum(int * array, int size){
+
+  int curr = 0;
+  int max = 0;
+
+  for(curr = 0; curr < size; curr++){
+    if(array[curr] > max){ max = array[curr]; }
+  }
+}
+
+void countingSort(int* array, int size){
+  int curr = 0;
+  int max = maximum(array, size);
+  int * counting_array = calloc(max, sizeof(int));
+
+  for(curr = 0; curr < size; curr ++){
+    counting_array[array[curr]]++;
+  }
+
+  int num = 0;
+  curr = 0;
+
+  while(curr <= size){
+    while(counting_array[num] > 0){
+      array[curr] = num;
+      counting_array[num]--;
+      curr++;
+      if(curr > size){ break; }
+    }
+    num++;
+  }
+}
 
 
-
-
-int main(int argc, char const *argv[])
-{
-   Network G = NETWORKinit(3);
-   NETWORKinsertArc(G,1,2);
+int main(int argc, char const *argv[]){
+   Network G = NETWORKinit(6);
+   NETWORKinsertArc(G,1,4);
    NETWORKinsertArc(G,2,3);
-   NETWORKinsertArc(G,1,3);
 
+
+   int i;
    int cc[G->V];
-   printf("nº de subredes: %d\n", NETWORKcc(G,cc));
+   int numCC = NETWORKcc(G,cc);
+   printf("nº de subredes: %d\n", numCC);
+   for (i=0; i < G->V; i++)
+      printf("%d\n", cc[i]);
+   int subredes[numCC];
+   printf("\n");
+   identificadores(G,cc,numCC,subredes);
+   countingSort(subredes,numCC);
+   for (i=0; i <numCC; i++)
+      printf("%d\n", subredes[i]);
+
    printNETWORK(G);
    BrokenRouters(G);
    return 0;
