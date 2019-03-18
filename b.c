@@ -20,6 +20,10 @@ struct node {
 
 int min(int a,int b){return(a<b?a:b);}
 
+int cmpfunc (const void * a, const void * b) {
+   return ( *(int*)a - *(int*)b );
+}
+
 static link NEWnode( int w, link next) { 
    link a = malloc( sizeof (struct node));
    a->w = w; 
@@ -65,14 +69,37 @@ void printNETWORK(Network G){
    int V = G->V;
    for (v = 0; v < G->V; ++v){
         link head = G->adj[v]; 
-        printf("VÉRTICE %d\n head ", v); 
+        printf("VÉRTICE %d\n head ", v+1); 
         while (head) 
         { 
-            printf("-> %d", head->w); 
+            printf("-> %d", head->w+1); 
             head = head->next; 
         } 
         printf("\n"); 
    }
+}
+
+void deleteEdge(Network G, int r1, int r2){
+   link head = G->adj[r1];
+   if (head == NULL) 
+      return; 
+   link temp = head; 
+    if (head->w == r2){
+        G->adj[r1] = G->adj[r1]->next;
+        free(temp);
+        return; 
+    }
+   while(temp->next != NULL && temp->next->w != r2) 
+        temp = temp->next;
+   if(temp->next == NULL)  {return;}
+    link next = temp->next->next; 
+    free(temp->next);
+    temp->next = next;
+}
+
+void deleteBothEdges(Network G, int r1, int r2){
+   deleteEdge(G,r1,r2);
+   deleteEdge(G,r2,r1);
 }
 
 void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low,int* routerspartidos){
@@ -108,7 +135,7 @@ void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low
 }
 
 void BrokenRouters(Network G){
-    int i;
+    int i,j;
     int numbrokenrouters = 0;
     int size = G->V;
     int des[size], visitado[size], pai[size], low[size], routerspartidos[size];
@@ -131,9 +158,13 @@ void BrokenRouters(Network G){
             numbrokenrouters++;
 	      }
       }
-    if(flag==0)
-	printf("Nenhum router\n");
    printf("%d\n", numbrokenrouters);
+   for (i=0; i<size; i++){
+      if(routerspartidos[i]==1)
+         for(j=0; j<size;j++){
+            deleteBothEdges(G,i,j);
+      }
+   }
 }
 
    
@@ -180,29 +211,25 @@ void radixsort(int arr[], int n)
     int m = maximum(arr, n); 
     for (int e = 1; m/e > 0; e *= 10) 
         countingSort(arr, n, e); 
-} 
-
-void deleteEdge(Network G, int r1, int r2){
-   link head = G->adj[r1];
-   if (head == NULL) 
-      return; 
-
-   link temp = head; 
-    if (head->w == r2){
-        G->adj[r1] = G->adj[r1]->next;
-        free(temp);
-        return; 
-    }
-   while(temp->next != NULL && temp->next->w != r2) 
-        temp = temp->next;
-    link next = temp->next->next; 
-  
-    // Unlink the node from linked list 
-    free(temp->next);  // Free memory 
-  
-    temp->next = next;  // Unlink the deleted node from list 
 }
 
+void HighestFrequency(Network G, int* cc){
+   qsort(cc,G->V,sizeof(int),cmpfunc);
+   int maxfreq=0, freq=1;
+   int maxind, i;
+   for(i=0;i<G->V-1;i++){
+      if(cc[i]==cc[i+1]){
+         freq++;
+         if(freq > maxfreq){
+            maxfreq=freq;
+            maxind=i;
+         }
+      }
+      else
+         freq=1;
+      }
+   printf("%d\n", maxfreq);
+}
 
 
 int main(int argc, char const *argv[]){
@@ -217,7 +244,7 @@ int main(int argc, char const *argv[]){
       scanf("%d", &r2);
       NETWORKinsertArc(G,r1,r2);
    }
-   int cc[N];
+   int cc[N], afterbreakingcc[N];
    int numCC = NETWORKcc(G,cc);
    printf("%d\n", numCC);
    /*for (i=0; i < N; i++)
@@ -225,16 +252,13 @@ int main(int argc, char const *argv[]){
    int subnetworks[numCC];
    subnetID(G,cc,numCC,subnetworks);
    radixsort(subnetworks,numCC);
-   //printf("Identificadores das subredes:");
    for (i=0; i <numCC; i++)
       printf("%d ", subnetworks[i]+1);
 
-   printNETWORK(G);
+   //printNETWORK(G);
    BrokenRouters(G);
-   //printf("vertice 0: %d", G->adj[0]->w);
-   deleteEdge(G,4,1);
-   /*printf("vertice 0: %d", G->adj[4]->w);
-   printf("vertice 0: %d", G->adj[4]->next->w);*/
-   printNETWORK(G);
+   //printNETWORK(G);
+   NETWORKcc(G,afterbreakingcc);
+   HighestFrequency(G, afterbreakingcc);
    return 0;
 }
