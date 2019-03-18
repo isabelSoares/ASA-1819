@@ -182,6 +182,28 @@ void radixsort(int arr[], int n)
         countingSort(arr, n, e); 
 } 
 
+void deleteEdge(Network G, int r1, int r2){
+   link head = G->adj[r1];
+   if (head == NULL) 
+      return; 
+
+   link temp = head; 
+    if (head->w == r2){
+        G->adj[r1] = G->adj[r1]->next;
+        free(temp);
+        return; 
+    }
+   while(temp->next != NULL && temp->next->w != r2) 
+        temp = temp->next;
+    link next = temp->next->next; 
+  
+    // Unlink the node from linked list 
+    free(temp->next);  // Free memory 
+  
+    temp->next = next;  // Unlink the deleted node from list 
+}
+
+
 
 int main(int argc, char const *argv[]){
    int N,M,r1,r2;
@@ -209,5 +231,10 @@ int main(int argc, char const *argv[]){
 
    printNETWORK(G);
    BrokenRouters(G);
+   //printf("vertice 0: %d", G->adj[0]->w);
+   deleteEdge(G,4,1);
+   /*printf("vertice 0: %d", G->adj[4]->w);
+   printf("vertice 0: %d", G->adj[4]->next->w);*/
+   printNETWORK(G);
    return 0;
 }
