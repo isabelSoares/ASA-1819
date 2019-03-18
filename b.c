@@ -31,12 +31,13 @@ static link NEWnode( int w, link next) {
    return a;                         
 }
 
-Network NETWORKinit(int V) { 
+Network NETWORKinit(int V) {
+   int v;
    Network G = malloc(sizeof *G);
    G->V = V; 
    G->A = 0;
    G->adj = malloc((V) * sizeof (link));
-   for (int v = 0; v < V; ++v) 
+   for (v = 0; v < V; ++v) 
       G->adj[v] = NULL;
    return G;
 }
@@ -48,17 +49,19 @@ void NETWORKinsertArc(Network G, int v, int w) {
 }
 
 void dfsRcc( Network G, int *cc, int v, int id){ 
+   link a;
    cc[v] = id;
-   for (link a = G->adj[v]; a != NULL; a = a->next)
+   for (a = G->adj[v]; a != NULL; a = a->next)
       if (cc[a->w] == -1) 
          dfsRcc(G, cc, a->w, id); 
 }
 
 int NETWORKcc( Network G, int *cc){ 
    int id = 0;
-   for (int v = 0; v < G->V; ++v) 
+   int v;
+   for (v = 0; v < G->V; ++v) 
       cc[v] = -1;
-   for (int v = 0; v < G->V; ++v)
+   for (v = 0; v < G->V; ++v)
       if (cc[v] == -1) 
          dfsRcc( G, cc, v, id++);
    return id;
@@ -66,7 +69,6 @@ int NETWORKcc( Network G, int *cc){
 
 void printNETWORK(Network G){
    int v;
-   int V = G->V;
    for (v = 0; v < G->V; ++v){
         link head = G->adj[v]; 
         printf("VÉRTICE %d\n head ", v+1); 
@@ -149,12 +151,9 @@ void BrokenRouters(Network G){
          BrokenRoutersAux(G,i,visitado,des,pai,low,routerspartidos);
 
     printf("\n");
-    int flag=0;
-    //printf("Routers que podem causar sub-redes: \n");
     for(i=0;i<size;i++){
          if(routerspartidos[i]==1){
-	         flag=1;
-	         //printf("Router: %d\n",i);
+	         /*printf("Router: %d\n",i);*/
             numbrokenrouters++;
 	      }
       }
@@ -171,7 +170,6 @@ void BrokenRouters(Network G){
 
 void subnetID(Network G, int *cc, int numCC, int *ids){
    int i, j;
-   int routermax = 0;
    for(j=0; j < numCC ;j++)
       for (i=0; i<G->V; i++){
          if (cc[i] == j)
@@ -187,6 +185,7 @@ int maximum(int * array, int size){
   for(curr = 0; curr < size; curr++){
     if(array[curr] > max){ max = array[curr]; }
   }
+  return max;
 }
 
 void countingSort(int arr[], int n, int exp) 
@@ -206,23 +205,22 @@ void countingSort(int arr[], int n, int exp)
         arr[i] = output[i]; 
 } 
 
-void radixsort(int arr[], int n) 
-{ 
-    int m = maximum(arr, n); 
-    for (int e = 1; m/e > 0; e *= 10) 
-        countingSort(arr, n, e); 
+void radixsort(int arr[], int n){ 
+   int e;
+   int m = maximum(arr, n); 
+   for (e = 1; m/e > 0; e *= 10) 
+      countingSort(arr, n, e); 
 }
 
 void HighestFrequency(Network G, int* cc){
    qsort(cc,G->V,sizeof(int),cmpfunc);
    int maxfreq=0, freq=1;
-   int maxind, i;
+   int i;
    for(i=0;i<G->V-1;i++){
       if(cc[i]==cc[i+1]){
          freq++;
          if(freq > maxfreq){
             maxfreq=freq;
-            maxind=i;
          }
       }
       else
@@ -233,15 +231,15 @@ void HighestFrequency(Network G, int* cc){
 
 
 int main(int argc, char const *argv[]){
-   int N,M,r1,r2;
-   scanf("%d", &N);
-   scanf("%d", &M);
+   int N,M,r1,r2, a;
+   a =scanf("%d", &N);
+   a =scanf("%d", &M);
    if ((N < 2) && (M < 1)){ fprintf(stderr,"Invalid number");}
    Network G = NETWORKinit(N);
    int i;
    for (i=0; i < M; i++){
-      scanf("%d", &r1);
-      scanf("%d", &r2);
+      a = scanf("%d", &r1);
+      a = scanf("%d", &r2);
       NETWORKinsertArc(G,r1,r2);
    }
    int cc[N], afterbreakingcc[N];
@@ -255,10 +253,11 @@ int main(int argc, char const *argv[]){
    for (i=0; i <numCC; i++)
       printf("%d ", subnetworks[i]+1);
 
-   //printNETWORK(G);
+   /*printNETWORK(G);*/
    BrokenRouters(G);
-   //printNETWORK(G);
+   /*printNETWORK(G);*/
    NETWORKcc(G,afterbreakingcc);
    HighestFrequency(G, afterbreakingcc);
-   return 0;
+   a = 0;
+   return a;
 }
