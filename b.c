@@ -250,8 +250,10 @@ int main(int argc, char const *argv[]){
    int subnetworks[numCC];
    subnetID(G,cc,numCC,subnetworks);
    radixsort(subnetworks,numCC);
-   for (i=0; i <numCC; i++)
+   for (i=0; i <numCC-1; i++)
       printf("%d ", subnetworks[i]+1);
+   printf("%d", subnetworks[numCC-1] +1);
+
 
    /*printNETWORK(G);*/
    BrokenRouters(G);
