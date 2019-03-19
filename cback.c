@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 typedef struct node *link;
 struct network {
@@ -25,8 +24,8 @@ int cmpfunc (const void * a, const void * b) {
    return ( *(int*)a - *(int*)b );
 }
 
-static link NEWnode(int w, link next) { 
-   link a = malloc(sizeof(struct node));
+static link NEWnode( int w, link next) { 
+   link a = malloc( sizeof (struct node));
    a->w = w; 
    a->next = next;     
    return a;                         
@@ -61,19 +60,7 @@ int NETWORKcc( Network G, int *cc){
    int id = 0;
    int v;
    for (v = 0; v < G->V; ++v) 
-         cc[v] = -1;
-   for (v = 0; v < G->V; ++v)
-      if (cc[v] == -1) 
-         dfsRcc( G, cc, v, id++);
-   return id;
-}
-
-int aNETWORKcc( Network G, int *cc){ 
-   int id = 2;
-   int v;
-   for (v = 0; v < G->V; ++v) 
-      if (cc[v] != 1)
-         cc[v] = -1;
+      cc[v] = -1;
    for (v = 0; v < G->V; ++v)
       if (cc[v] == -1) 
          dfsRcc( G, cc, v, id++);
@@ -149,8 +136,8 @@ void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low
 
 }
 
-void BrokenRouters(Network G, int *cc){
-   int i;
+void BrokenRouters(Network G){
+   int i,j;
    int numbrokenrouters = 0;
    int size = G->V;
    int *des = (int*)malloc(sizeof(int)*size);
@@ -177,9 +164,11 @@ void BrokenRouters(Network G, int *cc){
    printf("%d\n", numbrokenrouters);
    for (i=0; i<size; i++){
       if(routerspartidos[i]==1)
-         cc[i] = 1;
+         for(j=0; j<size;j++){
+            deleteBothEdges(G,i,j);
       }
    }
+}
 
    
 
@@ -192,7 +181,7 @@ void subnetID(Network G, int *cc, int numCC, int *ids){
       }
 }
 
-int maximum(int *array, int size){
+int maximum(int * array, int size){
 
   int curr = 0;
   int max = 0;
@@ -203,11 +192,11 @@ int maximum(int *array, int size){
   return max;
 }
 
-void countingSort(int *arr, int n, int exp) 
+void countingSort(int arr[], int n, int exp) 
 { 
     int *output = (int*)malloc(sizeof(int)*n);
     int i; 
-    int *count = (int*)calloc(10, sizeof(int)); 
+    int *count = (int*) calloc(10, sizeof(int)); 
     for (i = 0; i < n; i++) 
         count[ (arr[i]/exp)%10 ]++; 
     for (i = 1; i < 10; i++) 
@@ -221,7 +210,7 @@ void countingSort(int *arr, int n, int exp)
         arr[i] = output[i]; 
 } 
 
-void radixsort(int *arr, int n){ 
+void radixsort(int arr[], int n){ 
    int e;
    int m = maximum(arr, n); 
    for (e = 1; m/e > 0; e *= 10) 
@@ -231,10 +220,9 @@ void radixsort(int *arr, int n){
 void HighestFrequency(Network G, int* cc){
    radixsort(cc, G->V);
    int maxfreq=0, freq=1;
-   int i =0,j;
-   while(cc[i] == 1) {i++;}
-   for(j=i;j<G->V-1;j++){
-      if(cc[j]==cc[j+1]){
+   int i;
+   for(i=0;i<G->V-1;i++){
+      if(cc[i]==cc[i+1]){
          freq++;
          if(freq > maxfreq){
             maxfreq=freq;
@@ -260,9 +248,11 @@ int main(int argc, char const *argv[]){
       NETWORKinsertArc(G,r1,r2);
    }
    int *cc = (int*)malloc(sizeof(int)*N); 
+   int *afterbreakingcc = (int*)malloc(sizeof(int)*N);
    int numCC = NETWORKcc(G,cc);
-
    printf("%d\n", numCC);
+   /*for (i=0; i < N; i++)
+      printf("%d\n", cc[i]);*/
    int *subnetworks = (int*)malloc(sizeof(int)*numCC);
    subnetID(G,cc,numCC,subnetworks);
    radixsort(subnetworks,numCC);
@@ -272,13 +262,10 @@ int main(int argc, char const *argv[]){
 
 
    /*printNETWORK(G);*/
-   memset(cc, 0, N*sizeof(cc[0]));
-   BrokenRouters(G,cc);
+   BrokenRouters(G);
    /*printNETWORK(G);*/
-
-   aNETWORKcc(G,cc);
-   HighestFrequency(G,cc);
-   free(cc);
+   NETWORKcc(G,afterbreakingcc);
+   HighestFrequency(G, afterbreakingcc);
    a = 0;
    return a;
 }
