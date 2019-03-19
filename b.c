@@ -137,11 +137,15 @@ void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low
 }
 
 void BrokenRouters(Network G){
-    int i,j;
-    int numbrokenrouters = 0;
-    int size = G->V;
-    int des[size], visitado[size], pai[size], low[size], routerspartidos[size];
-    for(i=0;i<size;i++){
+   int i,j;
+   int numbrokenrouters = 0;
+   int size = G->V;
+   int *des = (int*)malloc(sizeof(int)*size);
+   int *visitado = (int*)malloc(sizeof(int)*size);
+   int *pai = (int*)malloc(sizeof(int)*size);
+   int *low = (int*)malloc(sizeof(int)*size);
+   int *routerspartidos = (int*)malloc(sizeof(int)*size);
+   for(i=0;i<size;i++){
         visitado[i]=0;
         pai[i]=-1;
         routerspartidos[i]=0;
@@ -190,8 +194,9 @@ int maximum(int * array, int size){
 
 void countingSort(int arr[], int n, int exp) 
 { 
-    int output[n];
-    int i, count[10] = {0}; 
+    int *output = (int*)malloc(sizeof(int)*n);
+    int i; 
+    int *count = (int*) calloc(10, sizeof(int)); 
     for (i = 0; i < n; i++) 
         count[ (arr[i]/exp)%10 ]++; 
     for (i = 1; i < 10; i++) 
@@ -213,7 +218,7 @@ void radixsort(int arr[], int n){
 }
 
 void HighestFrequency(Network G, int* cc){
-   qsort(cc,G->V,sizeof(int),cmpfunc);
+   radixsort(cc, G->V);
    int maxfreq=0, freq=1;
    int i;
    for(i=0;i<G->V-1;i++){
@@ -234,7 +239,7 @@ int main(int argc, char const *argv[]){
    int N,M,r1,r2, a;
    a =scanf("%d", &N);
    a =scanf("%d", &M);
-   if ((N < 2) && (M < 1)){ fprintf(stderr,"Invalid number");}
+   /*if ((N < 2) && (M < 1)){ fprintf(stderr,"Invalid number");}*/
    Network G = NETWORKinit(N);
    int i;
    for (i=0; i < M; i++){
@@ -242,12 +247,13 @@ int main(int argc, char const *argv[]){
       a = scanf("%d", &r2);
       NETWORKinsertArc(G,r1,r2);
    }
-   int cc[N], afterbreakingcc[N];
+   int *cc = (int*)malloc(sizeof(int)*N); 
+   int *afterbreakingcc = (int*)malloc(sizeof(int)*N);
    int numCC = NETWORKcc(G,cc);
    printf("%d\n", numCC);
    /*for (i=0; i < N; i++)
       printf("%d\n", cc[i]);*/
-   int subnetworks[numCC];
+   int *subnetworks = (int*)malloc(sizeof(int)*numCC);
    subnetID(G,cc,numCC,subnetworks);
    radixsort(subnetworks,numCC);
    for (i=0; i <numCC-1; i++)
