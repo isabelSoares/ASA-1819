@@ -3,35 +3,31 @@
 #include <string.h>
 
 typedef struct node *link;
+typedef struct network *Network;
 struct network {
    int V; 
    int A; 
    link *adj; 
 };
 
-typedef struct network *Network;
-
-
 struct node { 
    int w; 
    link next; 
 };
 
-
-
 int min(int a,int b){return(a<b?a:b);}
 
-int cmpfunc (const void * a, const void * b) {
-   return ( *(int*)a - *(int*)b );
-}
+/*funcao para comparar valores no quicksort*/
+int cmpfunc (const void * a, const void * b) {return( *(int*)a - *(int*)b );}
 
-static link NEWnode(int w, link next) { 
+static link NEWrouter(int w, link next) { 
    link a = malloc(sizeof(struct node));
    a->w = w; 
    a->next = next;     
    return a;                         
 }
 
+/*inicia uma rede com V vertices*/
 Network NETWORKinit(int V) {
    int v;
    Network G = malloc(sizeof*G);
@@ -43,58 +39,58 @@ Network NETWORKinit(int V) {
    return G;
 }
 
-void NETWORKinsertArc(Network G, int v, int w) {
-   G->adj[v-1] = NEWnode(w-1, G->adj[v-1]);
-   G->adj[w-1] = NEWnode(v-1, G->adj[w-1]);
+/*adiciona uma coneccao entre routers da rede*/
+void NETWORKinsertConnection(Network G, int v, int w) {
+   G->adj[v-1] = NEWrouter(w-1, G->adj[v-1]);
+   G->adj[w-1] = NEWrouter(v-1, G->adj[w-1]);
    G->A++;
 }
 
-void dfsRcc( Network G, int *cc, int v, int id){ 
+/*liberta a rede de memoria*/
+void NETWORKdestroy(Network G){
+   int i;
+   for(i = 0; i < G->V; i++) 
+      free(G->adj[i]);
+   free(G);
+}
+
+/*dfs auxiliar*/
+void rDFS(Network G, int *cc, int v, int id){ 
    link a;
    cc[v] = id;
    for (a = G->adj[v]; a != NULL; a = a->next)
       if (cc[a->w] == -1) 
-         dfsRcc(G, cc, a->w, id); 
+         rDFS(G, cc, a->w, id); 
 }
 
-int NETWORKcc( Network G, int *cc){ 
+/*funcao que retorna as componentes fortemente ligadas de uma rede*/
+int NETWORKcompsligadas(Network G, int *cc){ 
    int id = 0;
    int v;
    for (v = 0; v < G->V; ++v) 
          cc[v] = -1;
    for (v = 0; v < G->V; ++v)
       if (cc[v] == -1) 
-         dfsRcc( G, cc, v, id++);
+         rDFS( G, cc, v, id++);
    return id;
 }
 
-int aNETWORKcc( Network G, int *cc){ 
+/*funcao que retorna as subredes de um grafo "eliminando" os vertices que quebrariam a rede*/
+int NETWORKsubcompsligadas( Network G, int *cc){ 
    int id = 2;
+   /* comeca a contar componentes a partir de 2 (1 sao os routers que quebram a rede)*/
    int v;
    for (v = 0; v < G->V; ++v) 
       if (cc[v] != 1)
          cc[v] = -1;
    for (v = 0; v < G->V; ++v)
       if (cc[v] == -1) 
-         dfsRcc( G, cc, v, id++);
+         rDFS(G,cc,v,id++);
    return id;
 }
 
-void printNETWORK(Network G){
-   int v;
-   for (v = 0; v < G->V; ++v){
-        link head = G->adj[v]; 
-        printf("VÉRTICE %d\n head ", v+1); 
-        while (head) 
-        { 
-            printf("-> %d", head->w+1); 
-            head = head->next; 
-        } 
-        printf("\n"); 
-   }
-}
-
-void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low,int* routerspartidos){
+/*funcao auxiliar para determinar os vertices que quebram as redes (Algoritmo de Tarjan)*/
+void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low,int* brknRouters){
     link temp=NULL;
     static int time=0;
     int filhos=0;
@@ -107,21 +103,21 @@ void BrokenRoutersAux(Network G,int r ,int* visitado, int* des,int* pai,int* low
       if(!visitado[temp->w]){
           filhos++;
           pai[temp->w]=r;
-          BrokenRoutersAux(G,temp->w,visitado,des,pai,low,routerspartidos);
+          BrokenRoutersAux(G,temp->w,visitado,des,pai,low,brknRouters);
       low[r]= min(low[r],low[temp->w]);
          if(pai[r]==-1 && filhos>1)
-             routerspartidos[r]=1;
+             brknRouters[r]=1;
       if(pai[r]!=-1 && des[r]<=low[temp->w])
-            routerspartidos[r]=1;           
+            brknRouters[r]=1;           
         }    
-      else if(temp->w!=pai[r])        {
+      else if(temp->w!=pai[r]){
             low[r]=min(low[r],des[temp->w]);
         }
        temp= temp->next;
       }
-
 }
 
+/*funcao que determina os vertices que quebram as redes (Algoritmo de Tarjan)*/
 void BrokenRouters(Network G, int *cc){
    int i;
    int numbrokenrouters = 0;
@@ -130,74 +126,36 @@ void BrokenRouters(Network G, int *cc){
    int *visitado = (int*)malloc(sizeof(int)*size);
    int *pai = (int*)malloc(sizeof(int)*size);
    int *low = (int*)malloc(sizeof(int)*size);
-   int *routerspartidos = (int*)malloc(sizeof(int)*size);
+   int *brknRouters = (int*)malloc(sizeof(int)*size);
    for(i=0;i<size;i++){
         visitado[i]=0;
         pai[i]=-1;
-        routerspartidos[i]=0;
-    }
-    for(i=0;i<size;i++)
-      if(visitado[i]==0)
-         BrokenRoutersAux(G,i,visitado,des,pai,low,routerspartidos);
-
-    printf("\n");
-    for(i=0;i<size;i++){
-         if(routerspartidos[i]==1){
-	         /*printf("Router: %d\n",i);*/
-            numbrokenrouters++;
-	      }
-      }
-   printf("%d\n", numbrokenrouters);
-   for (i=0; i<size; i++){
-      if(routerspartidos[i]==1)
-         cc[i] = 1;
-      }
+        brknRouters[i]=0;
    }
+   for(i=0;i<size;i++)
+      if(visitado[i]==0)
+         BrokenRoutersAux(G,i,visitado,des,pai,low,brknRouters);
 
-   
+   printf("\n");
+   for(i=0;i<size;i++)
+         if(brknRouters[i]==1)
+            numbrokenrouters++;
+   printf("%d\n", numbrokenrouters);
+   for (i=0; i<size; i++)
+      if(brknRouters[i]==1)
+         cc[i] = 1;
+         /*assinala os vertices que quebram com o valor 1 para depois se fazer a segunda DFS*/
+}
 
-void subnetID(Network G, int *cc, int numCC, int *ids){
+/*funcao que retorna os maiores identificadores de cada subrede*/
+void subnetIdentifiers(Network G, int *cc, int numCC, int *ids){
    int i;
    for (i=0; i<G->V; i++)
       ids[cc[i]] = i;
 }
 
-int maximum(int *array, int size){
-
-  int curr = 0;
-  int max = 0;
-
-  for(curr = 0; curr < size; curr++){
-    if(array[curr] > max){ max = array[curr]; }
-  }
-  return max;
-}
-
-void countingSort(int *arr, int n, int exp) 
-{ 
-    int *output = (int*)malloc(sizeof(int)*n);
-    int i; 
-    int *count = (int*)calloc(10, sizeof(int)); 
-    for (i = 0; i < n; i++) 
-        count[ (arr[i]/exp)%10 ]++; 
-    for (i = 1; i < 10; i++) 
-        count[i] += count[i - 1]; 
-    for (i = n - 1; i >= 0; i--) 
-    { 
-        output[count[ (arr[i]/exp)%10 ] - 1] = arr[i]; 
-        count[ (arr[i]/exp)%10 ]--; 
-    }
-    for (i = 0; i < n; i++) 
-        arr[i] = output[i]; 
-} 
-
-void radixsort(int *arr, int n){ 
-   int e;
-   int m = maximum(arr, n); 
-   for (e = 1; m/e > 0; e *= 10) 
-      countingSort(arr, n, e); 
-}
-
+/*retorna a quantidade de vezes que o elemento mais comum do array aparece
+ordena a lista com quicksort e ignora os valores a 1 do array de componentes ligados (sao os routers que quebram)*/
 void HighestFrequency(Network G, int* cc){
    qsort(cc, G->V,sizeof(int),cmpfunc);
    int maxfreq=0, freq=1;
@@ -206,9 +164,8 @@ void HighestFrequency(Network G, int* cc){
    for(j=i;j<G->V-1;j++){
       if(cc[j]==cc[j+1]){
          freq++;
-         if(freq > maxfreq){
+         if(freq > maxfreq)
             maxfreq=freq;
-         }
       }
       else
          freq=1;
@@ -218,39 +175,32 @@ void HighestFrequency(Network G, int* cc){
    printf("%d\n", maxfreq);
 }
 
-
 int main(int argc, char const *argv[]){
    int N,M,r1,r2, a;
    a =scanf("%d", &N);
    a =scanf("%d", &M);
-   /*if ((N < 2) && (M < 1)){ fprintf(stderr,"Invalid number");}*/
-   Network G = NETWORKinit(N);
+   Network G = NETWORKinit(N); /*inicia a rede*/
    int i;
    for (i=0; i < M; i++){
       a = scanf("%d", &r1);
       a = scanf("%d", &r2);
-      NETWORKinsertArc(G,r1,r2);
+      NETWORKinsertConnection(G,r1,r2); /*input*/
    }
-   int *cc = (int*)malloc(sizeof(int)*N); 
-   int numCC = NETWORKcc(G,cc);
-
+   int *cc = (int*)malloc(sizeof(int)*N); /*array para as componentes ligadas*/
+   int numCC = NETWORKcompsligadas(G,cc); /*numCC = numero de componentes ligadas*/
    printf("%d\n", numCC);
-   int *subnetworks = (int*)malloc(sizeof(int)*numCC);
-   subnetID(G,cc,numCC,subnetworks);
+   int *subnetworks = (int*)malloc(sizeof(int)*numCC); /*array de identificadores*/
+   subnetIdentifiers(G,cc,numCC,subnetworks);
    qsort(subnetworks,numCC,sizeof(int),cmpfunc);
    for (i=0; i <numCC-1; i++)
       printf("%d ", subnetworks[i]+1);
    printf("%d", subnetworks[numCC-1] +1);
-
-
-   /*printNETWORK(G);*/
    memset(cc, 0, N*sizeof(cc[0]));
    BrokenRouters(G,cc);
-   /*printNETWORK(G);*/
-
-   aNETWORKcc(G,cc);
+   NETWORKsubcompsligadas(G,cc);
    HighestFrequency(G,cc);
    free(cc);
+   NETWORKdestroy(G); /*free ao grafo*/
    a = 0;
    return a;
 }
