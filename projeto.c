@@ -21,6 +21,10 @@ struct node {
 
 int min(int a,int b){return(a<b?a:b);}
 
+int cmpfunc (const void * a, const void * b) {
+   return ( *(int*)a - *(int*)b );
+}
+
 static link NEWnode(int w, link next) { 
    link a = malloc(sizeof(struct node));
    a->w = w; 
@@ -195,7 +199,7 @@ void radixsort(int *arr, int n){
 }
 
 void HighestFrequency(Network G, int* cc){
-   radixsort(cc, G->V);
+   qsort(cc, G->V,sizeof(int),cmpfunc);
    int maxfreq=0, freq=1;
    int i =0,j;
    while(cc[i] == 1) {i++;}
@@ -233,7 +237,7 @@ int main(int argc, char const *argv[]){
    printf("%d\n", numCC);
    int *subnetworks = (int*)malloc(sizeof(int)*numCC);
    subnetID(G,cc,numCC,subnetworks);
-   radixsort(subnetworks,numCC);
+   qsort(subnetworks,numCC,sizeof(int),cmpfunc);
    for (i=0; i <numCC-1; i++)
       printf("%d ", subnetworks[i]+1);
    printf("%d", subnetworks[numCC-1] +1);
