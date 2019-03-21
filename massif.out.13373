@@ -1,0 +1,43 @@
+desc: (none)
+cmd: ./a.out
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=104305
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=105869
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=peak
+n1: 1024 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1024 0x4E9E1D3: _IO_file_doallocate (filedoalloc.c:127)
+  n1: 1024 0x4EAC592: _IO_doallocbuf (genops.c:398)
+   n1: 1024 0x4EAB69A: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:556)
+    n1: 1024 0x4EAC60C: _IO_default_uflow (genops.c:413)
+     n1: 1024 0x4E8D25E: _IO_vfscanf (vfscanf.c:634)
+      n1: 1024 0x4E9B879: scanf (scanf.c:33)
+       n0: 1024 0x40064E: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+#-----------
+snapshot=3
+#-----------
+time=105869
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty

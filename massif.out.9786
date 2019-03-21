@@ -1,0 +1,679 @@
+desc: (none)
+cmd: ./a.out
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=26199660
+mem_heap_B=5223424
+mem_heap_extra_B=210128
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=45622939
+mem_heap_B=5572880
+mem_heap_extra_B=384856
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=72605926
+mem_heap_B=6058112
+mem_heap_extra_B=627472
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=98717478
+mem_heap_B=6527648
+mem_heap_extra_B=862240
+mem_stacks_B=0
+heap_tree=detailed
+n4: 6527648 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 861776 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 861760 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=5
+#-----------
+time=117053002
+mem_heap_B=6857344
+mem_heap_extra_B=1027088
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=141859082
+mem_heap_B=7303872
+mem_heap_extra_B=1250352
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=169057419
+mem_heap_B=7792768
+mem_heap_extra_B=1494800
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=192935735
+mem_heap_B=8222144
+mem_heap_extra_B=1709488
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=214978817
+mem_heap_B=8618592
+mem_heap_extra_B=1907712
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=238857518
+mem_heap_B=9047968
+mem_heap_extra_B=2122400
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=264451817
+mem_heap_B=9504672
+mem_heap_extra_B=2350752
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=290685231
+mem_heap_B=9972704
+mem_heap_extra_B=2584768
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=305260009
+mem_heap_B=10232736
+mem_heap_extra_B=2714784
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=331491752
+mem_heap_B=10700608
+mem_heap_extra_B=2948720
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=354809860
+mem_heap_B=11116480
+mem_heap_extra_B=3156656
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=369384354
+mem_heap_B=11376384
+mem_heap_extra_B=3286608
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=395616548
+mem_heap_B=11844464
+mem_heap_extra_B=3520648
+mem_stacks_B=0
+heap_tree=detailed
+n4: 11844464 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 3520176 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 3520176 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=18
+#-----------
+time=415401087
+mem_heap_B=12197280
+mem_heap_extra_B=3697056
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=445076475
+mem_heap_B=12726368
+mem_heap_extra_B=3961600
+mem_stacks_B=0
+heap_tree=detailed
+n4: 12726368 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 3961136 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 3961120 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=20
+#-----------
+time=464861474
+mem_heap_B=13079072
+mem_heap_extra_B=4137952
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=484644791
+mem_heap_B=13432000
+mem_heap_extra_B=4314416
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=514321145
+mem_heap_B=13961312
+mem_heap_extra_B=4579072
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=539049260
+mem_heap_B=14402656
+mem_heap_extra_B=4799744
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=573670665
+mem_heap_B=15020032
+mem_heap_extra_B=5108432
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=598398457
+mem_heap_B=15461088
+mem_heap_extra_B=5328960
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=623127793
+mem_heap_B=15902144
+mem_heap_extra_B=5549488
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=642910458
+mem_heap_B=16254976
+mem_heap_extra_B=5725904
+mem_stacks_B=0
+heap_tree=detailed
+n4: 16254976 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 5725440 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 5725424 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=28
+#-----------
+time=661279925
+mem_heap_B=16582720
+mem_heap_extra_B=5889776
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=688832380
+mem_heap_B=17074240
+mem_heap_extra_B=6135536
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=707201785
+mem_heap_B=17401792
+mem_heap_extra_B=6299312
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=725571255
+mem_heap_B=17729440
+mem_heap_extra_B=6463136
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=743938833
+mem_heap_B=18056928
+mem_heap_extra_B=6626880
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=762308672
+mem_heap_B=18384512
+mem_heap_extra_B=6790672
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=780676538
+mem_heap_B=18712192
+mem_heap_extra_B=6954512
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=799045710
+mem_heap_B=19040032
+mem_heap_extra_B=7118432
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=817415340
+mem_heap_B=19367776
+mem_heap_extra_B=7282304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=835784814
+mem_heap_B=19695424
+mem_heap_extra_B=7446128
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=854153209
+mem_heap_B=20022976
+mem_heap_extra_B=7609904
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=872520936
+mem_heap_B=20350464
+mem_heap_extra_B=7773648
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=890889148
+mem_heap_B=20677920
+mem_heap_extra_B=7937376
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=909258792
+mem_heap_B=21005600
+mem_heap_extra_B=8101216
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=936810667
+mem_heap_B=21496896
+mem_heap_extra_B=8346864
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=964363847
+mem_heap_B=21988064
+mem_heap_extra_B=8592448
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=982731199
+mem_heap_B=22315552
+mem_heap_extra_B=8756192
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=1010283751
+mem_heap_B=22806816
+mem_heap_extra_B=9001824
+mem_stacks_B=0
+heap_tree=detailed
+n4: 22806816 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 9001360 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 9001344 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=46
+#-----------
+time=1028652297
+mem_heap_B=23134400
+mem_heap_extra_B=9165616
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=1065386447
+mem_heap_B=23789760
+mem_heap_extra_B=9493296
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=1083755072
+mem_heap_B=24117632
+mem_heap_extra_B=9657232
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=1102123141
+mem_heap_B=24445248
+mem_heap_extra_B=9821040
+mem_stacks_B=0
+heap_tree=detailed
+n4: 24445248 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 9820576 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 9820560 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=50
+#-----------
+time=1116698932
+mem_heap_B=24705216
+mem_heap_extra_B=9951024
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=1131274118
+mem_heap_B=24965184
+mem_heap_extra_B=10081008
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=1145849726
+mem_heap_B=25225088
+mem_heap_extra_B=10210960
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=1160425709
+mem_heap_B=25484992
+mem_heap_extra_B=10340912
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=1175001597
+mem_heap_B=25744864
+mem_heap_extra_B=10470848
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=1189576575
+mem_heap_B=26004896
+mem_heap_extra_B=10600864
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=1204151078
+mem_heap_B=26264864
+mem_heap_extra_B=10730848
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=1218725825
+mem_heap_B=26524768
+mem_heap_extra_B=10860800
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=1233300676
+mem_heap_B=26784704
+mem_heap_extra_B=10990768
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=1247875327
+mem_heap_B=27044800
+mem_heap_extra_B=11120816
+mem_stacks_B=0
+heap_tree=detailed
+n4: 27044800 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 11120352 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 11120336 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=60
+#-----------
+time=1262451338
+mem_heap_B=27304832
+mem_heap_extra_B=11250832
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=1277026253
+mem_heap_B=27564768
+mem_heap_extra_B=11380800
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=1291600768
+mem_heap_B=27824832
+mem_heap_extra_B=11510832
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=1306175550
+mem_heap_B=28084704
+mem_heap_extra_B=11640768
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=1320750846
+mem_heap_B=28344640
+mem_heap_extra_B=11770736
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=1335325664
+mem_heap_B=28604864
+mem_heap_extra_B=11900848
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=1349901036
+mem_heap_B=28864896
+mem_heap_extra_B=12030864
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=1364475734
+mem_heap_B=29124800
+mem_heap_extra_B=12160816
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=1379050244
+mem_heap_B=29384800
+mem_heap_extra_B=12290816
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=1393624949
+mem_heap_B=29644576
+mem_heap_extra_B=12420704
+mem_stacks_B=0
+heap_tree=detailed
+n4: 29644576 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 12420240 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 12420224 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 4112 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=70
+#-----------
+time=1408201072
+mem_heap_B=29904320
+mem_heap_extra_B=12550576
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=1422776943
+mem_heap_B=30164160
+mem_heap_extra_B=12680496
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=1461314733
+mem_heap_B=32805136
+mem_heap_extra_B=12800488
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=1565606329
+mem_heap_B=47205636
+mem_heap_extra_B=12800556
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=1818711898
+mem_heap_B=47205636
+mem_heap_extra_B=12800556
+mem_stacks_B=0
+heap_tree=peak
+n11: 47205636 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 12800000 0x4006CA: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 12800000 0x4006EF: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 4800000 0x400998: NETWORKinit (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 4800000 0x400668: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 2400000 0x40107D: BrokenRouters (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 2400000 0x4007F5: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 2400000 0x401088: BrokenRouters (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 2400000 0x4007F5: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 2400000 0x401095: BrokenRouters (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 2400000 0x4007F5: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 2400000 0x4E6A347: qsort_r (msort.c:222)
+  n1: 2400000 0x4013CF: HighestFrequency (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+   n0: 2400000 0x40080B: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 2400000 0x400716: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 2400000 0x401066: BrokenRouters (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 2400000 0x4007F5: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n1: 2400000 0x401072: BrokenRouters (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+  n0: 2400000 0x4007F5: main (in /home/tigofran/Documents/GIT/ASA-18-19/a.out)
+ n0: 5636 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=75
+#-----------
+time=1833286404
+mem_heap_B=38629508
+mem_heap_extra_B=10912476
+mem_stacks_B=0
+heap_tree=empty
