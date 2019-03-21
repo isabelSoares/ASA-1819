@@ -4,6 +4,7 @@
 
 typedef struct node *link;
 typedef struct network *Network;
+
 struct network {
    int V; 
    int A; 
