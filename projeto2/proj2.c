@@ -10,7 +10,7 @@
 #define MIN(X,Y) X < Y ? X : Y
 #define INFINITE 10000000
  
-void push(const int * const * C, int ** F, int *excess, int u, int v) {
+void push(int ** C, int ** F, int *excess, int u, int v) {
   int send = MIN(excess[u], C[u][v] - F[u][v]);
   F[u][v] += send;
   F[v][u] -= send;
@@ -18,7 +18,7 @@ void push(const int * const * C, int ** F, int *excess, int u, int v) {
   excess[v] += send;
 }
  
-void relabel(const int * const * C, const int * const * F, int *height, int u) {
+void relabel( int **C,  int ** F, int *height, int u) {
   int v;
   int min_height = INFINITE;
   for (v = 0; v < NODES; v++) {
@@ -29,7 +29,7 @@ void relabel(const int * const * C, const int * const * F, int *height, int u) {
   }
 }
  
-void discharge(const int * const * C, int ** F, int *excess, int *height, int *seen, int u) {
+void discharge(int ** C, int ** F, int *excess, int *height, int *seen, int u) {
   while (excess[u] > 0) {
     if (seen[u] < NODES) {
       int v = seen[u];
@@ -54,7 +54,7 @@ void moveToFront(int i, int *A) {
   A[0] = temp;
 }
  
-int pushRelabel(const int * const * C, int ** F, int source, int sink) {
+int pushRelabel(int ** C, int ** F, int source, int sink) {
   int *excess, *height, *list, *seen, i, p;
  
   excess = (int *) calloc(NODES, sizeof(int));
@@ -100,7 +100,7 @@ int pushRelabel(const int * const * C, int ** F, int source, int sink) {
   return maxflow;
 }
  
-void printMatrix(const int * const * M) {
+void printMatrix(int ** M) {
   int i,j;
   for (i = 0; i < NODES; i++) {
     for (j = 0; j < NODES; j++)
@@ -110,7 +110,20 @@ void printMatrix(const int * const * M) {
 }
  
 int main(void) {
-  int **flow, **capacities, i;
+  int **flow, **capacities, i,j,o,d,c;
+
+  int f, e,  t;
+  scanf("%d", &f);
+  scanf("%d", &e);
+  scanf("%d", &t);
+  for( j= 0; j<f;j++){scanf("%d",&j);}
+  for( j= 0; j<e;j++){scanf("%d",&j);}
+  for( j= 0; j<t;j++){
+    scanf("%d",&o);
+    scanf("%d",&d);
+    scanf("%d",&c);
+  }
+
   flow = (int **) calloc(NODES, sizeof(int*));
   capacities = (int **) calloc(NODES, sizeof(int*));
   for (i = 0; i < NODES; i++) {
