@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
  
-#define NODES 6
 #define MIN(X,Y) X < Y ? X : Y
 #define INFINITE 10000000
+
+int NODES;
  
 void push(int ** C, int ** F, int *excess, int u, int v) {
   int send = MIN(excess[u], C[u][v] - F[u][v]);
@@ -54,13 +55,12 @@ void moveToFront(int i, int *A) {
   A[0] = temp;
 }
  
-int pushRelabel(int ** C, int ** F, int source, int sink) {
-  int *excess, *height, *list, *seen, i, p;
+int pushRelabel(int ** C, int ** F, int *excess,int source, int sink) {
+  int *height, *list, *seen, i, p;
  
-  excess = (int *) calloc(NODES, sizeof(int));
+  
   height = (int *) calloc(NODES, sizeof(int));
   seen = (int *) calloc(NODES, sizeof(int));
- 
   list = (int *) calloc((NODES-2), sizeof(int));
  
   for (i = 0, p = 0; i < NODES; i++){
@@ -110,41 +110,45 @@ void printMatrix(int ** M) {
 }
  
 int main(void) {
-  int **flow, **capacities, i,j,o,d,c;
+  int *excess, **flow, **capacities, i,j,k,l,o,d,c;
 
-  int f, e,  t;
+  int f, e, t;
   scanf("%d", &f);
   scanf("%d", &e);
-  scanf("%d", &t);
-  for( j= 0; j<f;j++){scanf("%d",&j);}
-  for( j= 0; j<e;j++){scanf("%d",&j);}
-  for( j= 0; j<t;j++){
-    scanf("%d",&o);
-    scanf("%d",&d);
-    scanf("%d",&c);
-  }
 
+  NODES = f + e + 2;
+  scanf("%d", &t);
+
+  excess = (int *) calloc(NODES, sizeof(int));
   flow = (int **) calloc(NODES, sizeof(int*));
   capacities = (int **) calloc(NODES, sizeof(int*));
   for (i = 0; i < NODES; i++) {
     flow[i] = (int *) calloc(NODES, sizeof(int));
     capacities[i] = (int *) calloc(NODES, sizeof(int));
   }
+
+  for( j= 2; j<f+1;j++){
+    scanf("%d",&k);
+    excess[j] = k;
+    capacities[0][j]= 0;
+    } /*excessos*/
+  for( j= f+2; j<NODES;j++){
+    scanf("%d",&l);
+    excess[j] = l;
+    }
+  for( j= 0; j<t;j++){
+    scanf("%d",&o);
+    scanf("%d",&d);
+    scanf("%d",&c);
+    capacities[o][d] = c;
+  }
  
-  //Sample graph
-  capacities[0][1] = 2;
-  capacities[0][2] = 9;
-  capacities[1][2] = 1;
-  capacities[1][3] = 0;
-  capacities[1][4] = 0;
-  capacities[2][4] = 7;
-  capacities[3][5] = 7;
-  capacities[4][5] = 4;
- 
+
   printf("Capacity:\n");
+
   printMatrix(capacities);
  
-  printf("Max Flow:\n%d\n", pushRelabel(capacities, flow, 0, 5));
+  printf("Max Flow:\n%d\n", pushRelabel(capacities, flow, excess,0, 1));
  
   printf("Flows:\n");
   printMatrix(flow);
