@@ -7,6 +7,12 @@
 #define INFINITE 10000000
 
 int NODES;
+
+int compare_function(const void *a,const void *b) {
+  int *x = (int *) a;
+  int *y = (int *) b;
+  return *x - *y;
+}
  
 void push(int ** C, int ** F, int *excess, int u, int v) {
   int send = MIN(excess[u], C[u][v] - F[u][v]);
@@ -90,7 +96,6 @@ int pushRelabel(int **C, int ** F, int source, int sink) {
     maxflow += F[source][i];
  
   free(list);
- 
   free(seen);
   free(height);
   free(excess);
@@ -108,93 +113,103 @@ void printMatrix(int ** M) {
 }
 
 
-int G[10][10],visited[10],n;    //n is no of vertices and graph is sorted in array G[10][10]
-
- 
-void DFS(int i)
-{
+void DFS(int** G, int*visited ,int size ,int i){
   int j;
-	printf("\n%d",i);
+	
     visited[i]=1;
 	
-	for(j=0;j<n;j++)
-       if(!visited[j]&&G[i][j]==1)
-            DFS(j);
+	for(j=0;j<size;j++)
+       if(!visited[j] && G[i][j]){
+          /*printf("DFS: %d->%d\n",i,j);*/
+          DFS(G,visited, size, j);
+       }
 }
  
 int main(void) {
-  int **flow, **capacities, i,j,k,l,o,d,c;
+  int **flow, **capacities,**transposed , i,j,k,l,o,d,c,a;
 
   int f, e, t, stcounter=1;
-  scanf("%d", &f); //num fornecedores
-  scanf("%d", &e); //num estacoes
+  a = scanf("%d", &f); /*num fornecedores*/
+  a = scanf("%d", &e); /*num estacoes*/
 
   NODES = f + e*2 + 2;
-  printf("estacoes/nodes %d %d\n", e, NODES);
-  scanf("%d", &t); //num ligacoes
+  a = scanf("%d", &t); /*num ligacoes*/
 
   flow = (int **) calloc(NODES, sizeof(int*));
   capacities = (int **) calloc(NODES, sizeof(int*));
+  transposed = (int **) calloc(NODES, sizeof(int*));
   for (i = 0; i < NODES; i++) {
     flow[i] = (int *) calloc(NODES, sizeof(int));
     capacities[i] = (int *) calloc(NODES, sizeof(int));
+    transposed[i] = (int *) calloc(NODES, sizeof(int));
   }
 
   for( j= 2; j<=f+1;j++){ /*fornecedores*/
-    scanf("%d",&k);
+    a = scanf("%d",&k);
     capacities[0][j]= k;
     }
 
   for( j= f+2; j<f+e+2;j++){ /*estacoes*/
-    scanf("%d",&l);
+    a = scanf("%d",&l);
     capacities[j][NODES-1-e+stcounter] = l; 
-    printf("capc da estacao: %d %d %d\n", j, NODES-1-e+stcounter, l);
+    /*printf("capc da estacao: %d %d %d\n", j, NODES-1-e+stcounter, l);*/
     stcounter++;
     }
 
   for( j= 0; j<t;j++){
-    scanf("%d",&o);
-    scanf("%d",&d);
-    scanf("%d",&c);
+    a = scanf("%d",&o);
+    a = scanf("%d",&d);
+    a = scanf("%d",&c);
     if (d == 1 && o >= f+2){
       capacities[o+e][d] = c;
-      printf("caso especial %d %d %d\n",o+e,d,c);
+      /*printf("caso especial %d %d %d\n",o+e,d,c);*/
     }
     else{
       capacities[o][d] = c;
-      printf("cap %d %d %d\n", o,d,c);
+      /*printf("cap %d %d %d\n", o,d,c);*/
     }
   }
  
 
-  printf("Capacity:\n");
+  /*printf("Capacity:\n");
 
-  printMatrix(capacities);
+  printMatrix(capacities);*/
  
-  printf("Max Flow:\n%d\n", pushRelabel(capacities, flow,0, 1));
+  printf("%d\n", pushRelabel(capacities, flow,0, 1));
  
-  printf("Flows:\n");
-  printMatrix(flow);
+  /*printf("Flows:\n");
+  printMatrix(flow);*/
+
+  for (i=0; i< NODES; i++)
+    for(j=0; j<NODES; j++){
+      flow[i][j] = capacities[i][j] - flow[i][j];
+    }
+  
+  for (i=0; i< NODES; i++)
+    for(j=0; j<NODES; j++){
+      transposed[j][i] = flow[i][j];
+    }
 
 
-  // DFS para cortes mínimos 
-  int m,y;
-  printf("Enter number of vertices:");
-   
-	scanf("%d",&n);
+  /*printf("Transposed:\n");
+  printMatrix(transposed);*/
  
-    //read the adjecency matrix
-	printf("\nEnter adjecency matrix of the graph:");
-   
-	for(i=0;i<n;i++)
-       for(y=0;y<n;y++)
-			scanf("%d",&G[m][y]);
+  int *visited, *visitedStations, counter=0;
+  visited = (int *) calloc(NODES, sizeof(int));
+  visitedStations = (int *) calloc(e, sizeof(int));
  
-    //visited is initialized to zero
-   for(m=0;m<n;m++)
-        visited[m]=0;
- 
-    DFS(0);
- 
-  return 0;
+  DFS(transposed, visited,NODES ,1);
+  for (i=0; i<NODES;i++)
+    if (visited[i] == 1 && i > f+e+1){
+      visitedStations[counter] = i-e;
+      counter++;
+    }
+  qsort(visitedStations,e,sizeof(int), compare_function);
+  for (i=0; i < e-1; i++)
+    if (visitedStations[i] != 0)
+      printf("%d ", visitedStations[i]);
+  if (visitedStations[e-1] != 0)
+    printf("%d\n", visitedStations[e-1]); 
+  a=0;
+  return a;
 }

@@ -44,7 +44,6 @@ Network NETWORKinit(int V) {
 void NETWORKinsertConnection(Network G, int v, int w) {
    G->adj[v-1] = NEWrouter(w-1, G->adj[v-1]);
    G->adj[w-1] = NEWrouter(v-1, G->adj[w-1]);
-   G->A++;
 }
 
 /*liberta a rede de memoria*/
