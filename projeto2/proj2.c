@@ -8,10 +8,23 @@
 
 int NODES;
 
+struct edge{
+  int x,y;
+};
+
 int compare_function(const void *a,const void *b) {
   int *x = (int *) a;
   int *y = (int *) b;
   return *x - *y;
+}
+
+int compare_function_edge(const void *a, const void *b) {
+  const struct edge *a1 = a;
+  const struct edge *b1 = b;
+  if (a1->x - b1->x != 0)
+    return a1->x - b1->x;
+  else
+    return a1->y - b1->y;
 }
  
 void push(int ** C, int ** F, int *excess, int u, int v) {
@@ -128,12 +141,12 @@ void DFS(int** G, int*visited ,int size ,int i){
 int main(void) {
   int **flow, **capacities,**transposed , i,j,k,l,o,d,c,a;
 
-  int f, e, t, stcounter=1;
+  int f, e, connections, stcounter=1;
   a = scanf("%d", &f); /*num fornecedores*/
   a = scanf("%d", &e); /*num estacoes*/
 
   NODES = f + e*2 + 2;
-  a = scanf("%d", &t); /*num ligacoes*/
+  a = scanf("%d", &connections); /*num ligacoes*/
 
   flow = (int **) calloc(NODES, sizeof(int*));
   capacities = (int **) calloc(NODES, sizeof(int*));
@@ -156,7 +169,7 @@ int main(void) {
     stcounter++;
     }
 
-  for( j= 0; j<t;j++){
+  for( j= 0; j<connections;j++){
     a = scanf("%d",&o);
     a = scanf("%d",&d);
     a = scanf("%d",&c);
@@ -186,30 +199,67 @@ int main(void) {
     }
   
   for (i=0; i< NODES; i++)
-    for(j=0; j<NODES; j++){
+    for(j=0; j<NODES; j++)
       transposed[j][i] = flow[i][j];
-    }
-
+    
 
   /*printf("Transposed:\n");
   printMatrix(transposed);*/
  
-  int *visited, *visitedStations, counter=0;
+  int *visited; /**visitedStations, counter=0;*/
   visited = (int *) calloc(NODES, sizeof(int));
-  visitedStations = (int *) calloc(e, sizeof(int));
+  /*visitedStations = (int *) calloc(e, sizeof(int));*/
  
   DFS(transposed, visited,NODES ,1);
-  for (i=0; i<NODES;i++)
-    if (visited[i] == 1 && i > f+e+1){
-      visitedStations[counter] = i-e;
-      counter++;
+
+  /*for (i=0; i<NODES;i++)
+   printf("visited: %d: %d\n", i,visited[i]);*/
+
+int *cutstations, st_c=0, lig_c=0;
+struct edge *cutedges;
+cutstations = (int *) calloc(e, sizeof(int));
+cutedges = (struct edge *) calloc(connections,sizeof(struct edge));
+for(i=0;i<connections+f+e;i++){
+  cutedges[i].x = 0;
+  cutedges[i].y = 0;
+}
+ 
+
+for (i = 0; i < NODES; i++) 
+      for (j = 0; j < NODES; j++) 
+         if (visited[i] == 1 && visited[j] == 0 && flow[i][j] != 0){ /*if true , [j][i] faz parte do corte minimo*/
+          if (j >= f+2 &&  j <= f+e+1){ /*estacao no corte minimo*/
+            cutstations[st_c] = j;
+            st_c++;
+          }
+          else if(j > f+e+1){ /*ligacao no corte minimo*/
+            cutedges[lig_c].x = j-e;
+            cutedges[lig_c].y = i;
+            lig_c++;
+          }
+          else if(j > 1 && j < f+2 ){
+            cutedges[lig_c].x = j;
+            cutedges[lig_c].y = i;
+            lig_c++;
+          }
+         }
+  qsort(cutstations, e, sizeof(int), compare_function);
+  qsort(cutedges,connections,sizeof(struct edge), compare_function_edge);
+  int augmentstations=0;
+  for(i=0;i<e-1;i++)
+    if(cutstations[i] != 0){
+      printf("%d ", cutstations[i]);
+      augmentstations++;
     }
-  qsort(visitedStations,e,sizeof(int), compare_function);
-  for (i=0; i < e-1; i++)
-    if (visitedStations[i] != 0)
-      printf("%d ", visitedStations[i]);
-  if (visitedStations[e-1] != 0)
-    printf("%d\n", visitedStations[e-1]); 
+  if(cutstations[e-1] != 0){
+    printf("%d\n", cutstations[e-1]);
+    augmentstations++;
+  }
+  if (augmentstations == 0) {printf("\n");}
+  for(i=0;i<connections;i++)
+    if(cutedges[i].x != 0)
+      printf("%d %d\n",cutedges[i].x, cutedges[i].y);
+
   a=0;
   return a;
 }
