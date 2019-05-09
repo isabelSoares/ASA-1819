@@ -217,8 +217,8 @@ int main(void) {
 int *cutstations, st_c=0, lig_c=0;
 struct edge *cutedges;
 cutstations = (int *) calloc(e, sizeof(int));
-cutedges = (struct edge *) calloc(connections,sizeof(struct edge));
-for(i=0;i<connections+f+e;i++){
+cutedges = (struct edge *) malloc(connections* sizeof(struct edge));
+for(i=0;i<connections;i++){
   cutedges[i].x = 0;
   cutedges[i].y = 0;
 }
@@ -227,23 +227,37 @@ for(i=0;i<connections+f+e;i++){
 for (i = 0; i < NODES; i++) 
       for (j = 0; j < NODES; j++) 
          if (visited[i] == 1 && visited[j] == 0 && flow[i][j] != 0){ /*if true , [j][i] faz parte do corte minimo*/
-          if (j >= f+2 &&  j <= f+e+1){ /*estacao no corte minimo*/
+          printf("mincut: %d->%d\n", j,i);
+          if (i >= f+e+2 && j >= f+2 && j <= f+e+1){ /*estacao no corte minimo*/
             cutstations[st_c] = j;
             st_c++;
           }
-          else if(j > f+e+1){ /*ligacao no corte minimo*/
+          else if(j >= f+e+2){ /*ligacao no corte minimo - auxiliar que envia */
             cutedges[lig_c].x = j-e;
             cutedges[lig_c].y = i;
             lig_c++;
           }
-          else if(j > 1 && j < f+2 ){
+          else if(j >= 2 && j <= f+1 )/*ligacao no corte minimo - fornecedor que envia*/ {
             cutedges[lig_c].x = j;
             cutedges[lig_c].y = i;
             lig_c++;
           }
          }
+/*
+  printf("cutstations\n");
+  for (i=0;i<e;i++){
+    printf("%d ", cutstations[i]);
+  }
+    printf("cutedges\n");
+  for (i=0;i<e;i++){
+    printf("%d %d\n", cutedges[i].x, cutedges[i].y);
+  }
+*/
+
   qsort(cutstations, e, sizeof(int), compare_function);
   qsort(cutedges,connections,sizeof(struct edge), compare_function_edge);
+
+
   int augmentstations=0;
   for(i=0;i<e-1;i++)
     if(cutstations[i] != 0){
@@ -258,6 +272,8 @@ for (i = 0; i < NODES; i++)
   for(i=0;i<connections;i++)
     if(cutedges[i].x != 0)
       printf("%d %d\n",cutedges[i].x, cutedges[i].y);
+
+  printf("fornecedores: %d estacoes: %d ligacoes: %d, auxiliares: %d\n", f,e,connections, NODES-f-e-2);
 
   a=0;
   return a;
