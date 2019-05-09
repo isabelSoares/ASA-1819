@@ -192,7 +192,6 @@ int main(void) {
   visited = (int *) calloc(NODES, sizeof(int));
   DFS(transposed, visited,NODES ,1);
 
-<<<<<<< HEAD
   /*for (i=0; i<NODES;i++)
    printf("visited: %d: %d\n", i,visited[i]);*/
 
@@ -205,17 +204,6 @@ for(i=0;i<connections;i++){
   cutedges[i].y = 0;
 }
  
-=======
-  int *cutstations, st_c=0, lig_c=0;
-  struct edge *cutedges;
-  cutstations = (int *) calloc(e, sizeof(int));
-  cutedges = (struct edge *) calloc(connections,sizeof(struct edge));
-  for(i=0;i<connections+f+e;i++){
-    cutedges[i].x = 0;
-    cutedges[i].y = 0;
-  }
-  
->>>>>>> 5cd92c7aeb0905bec0682d7569ca68ce2f50c1d9
 
   for (i = 0; i < NODES; i++) 
       for (j = 0; j < NODES; j++) 
