@@ -115,14 +115,14 @@ int pushRelabel(int **C, int ** F, int source, int sink) {
   return maxflow;
 }
  
-void printMatrix(int ** M) {
+/*void printMatrix(int ** M) {
   int i,j;
   for (i = 0; i < NODES; i++) {
     for (j = 0; j < NODES; j++)
       printf("%d\t",M[i][j]);
     printf("\n");
   }
-}
+}*/
 
 
 void DFS(int** G, int*visited ,int size ,int i){
@@ -132,7 +132,6 @@ void DFS(int** G, int*visited ,int size ,int i){
 	
 	for(j=0;j<size;j++)
        if(!visited[j] && G[i][j]){
-          /*printf("DFS: %d->%d\n",i,j);*/
           DFS(G,visited, size, j);
        }
 }
@@ -141,8 +140,8 @@ int main(void) {
   int **flow, **capacities,**transposed , i,j,k,l,o,d,c,a;
 
   int f, e, connections, stcounter=1;
-  a = scanf("%d", &f); /*num fornecedores*/
-  a = scanf("%d", &e); /*num estacoes*/
+  a = scanf("%d", &f); /*numero de fornecedores*/
+  a = scanf("%d", &e); /*numero de estacoes*/
 
   NODES = f + e*2 + 2;
   a = scanf("%d", &connections); /*numero de ligacoes*/
@@ -164,7 +163,6 @@ int main(void) {
   for( j= f+2; j<f+e+2;j++){ /*estacoes*/
     a = scanf("%d",&l);
     capacities[j][NODES-1-e+stcounter] = l; 
-    /*printf("capc da estacao: %d %d %d\n", j, NODES-1-e+stcounter, l);*/
     stcounter++;
     }
 
@@ -174,23 +172,12 @@ int main(void) {
     a = scanf("%d",&c);
     if (d == 1 && o >= f+2){
       capacities[o+e][d] = c;
-      /*printf("caso especial %d %d %d\n",o+e,d,c);*/
     }
     else{
       capacities[o][d] = c;
-      /*printf("cap %d %d %d\n", o,d,c);*/
     }
   }
- 
-
-  /*printf("Capacity:\n");
-
-  printMatrix(capacities);*/
- 
   printf("%d\n", pushRelabel(capacities, flow,0, 1));
- 
-  /*printf("Flows:\n");
-  printMatrix(flow);*/
 
   for (i=0; i< NODES; i++)
     for(j=0; j<NODES; j++){
@@ -200,31 +187,22 @@ int main(void) {
   for (i=0; i< NODES; i++)
     for(j=0; j<NODES; j++)
       transposed[j][i] = flow[i][j];
-    
-
-  /*printf("Transposed:\n");
-  printMatrix(transposed);*/
  
-  int *visited; /**visitedStations, counter=0;*/
+  int *visited;
   visited = (int *) calloc(NODES, sizeof(int));
-  /*visitedStations = (int *) calloc(e, sizeof(int));*/
- 
   DFS(transposed, visited,NODES ,1);
 
-  /*for (i=0; i<NODES;i++)
-   printf("visited: %d: %d\n", i,visited[i]);*/
+  int *cutstations, st_c=0, lig_c=0;
+  struct edge *cutedges;
+  cutstations = (int *) calloc(e, sizeof(int));
+  cutedges = (struct edge *) calloc(connections,sizeof(struct edge));
+  for(i=0;i<connections+f+e;i++){
+    cutedges[i].x = 0;
+    cutedges[i].y = 0;
+  }
+  
 
-int *cutstations, st_c=0, lig_c=0;
-struct edge *cutedges;
-cutstations = (int *) calloc(e, sizeof(int));
-cutedges = (struct edge *) calloc(connections,sizeof(struct edge));
-for(i=0;i<connections+f+e;i++){
-  cutedges[i].x = 0;
-  cutedges[i].y = 0;
-}
- 
-
-for (i = 0; i < NODES; i++) 
+  for (i = 0; i < NODES; i++) 
       for (j = 0; j < NODES; j++) 
          if (visited[i] == 1 && visited[j] == 0 && flow[i][j] != 0){ /*if true , [j][i] faz parte do corte minimo*/
           if (j >= f+2 &&  j <= f+e+1){ /*estacao no corte minimo*/
