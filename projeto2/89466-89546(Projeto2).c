@@ -145,7 +145,7 @@ int main(void) {
   a = scanf("%d", &e); /*num estacoes*/
 
   NODES = f + e*2 + 2;
-  a = scanf("%d", &connections); /*num ligacoes*/
+  a = scanf("%d", &connections); /*numero de ligacoes*/
 
   flow = (int **) calloc(NODES, sizeof(int*));
   capacities = (int **) calloc(NODES, sizeof(int*));
