@@ -122,16 +122,6 @@ int relabelToFront(int **capacities, int ** flows, int source, int market) {
   return maximumflow;
 }
  
-void printMatrix(int **M) {
-  int i,j;
-  for (i = 0; i < numvertices; i++) {
-    for (j = 0; j < numvertices; j++)
-      printf("%d ",M[i][j]);
-    printf("\n");
-  }
-}
-
-
 void DFS(int** G, int*visited ,int size ,int i){
   int j;
 	visited[i]=1;
@@ -171,7 +161,7 @@ int main(void) {
     capacities[j][numvertices-1-e+stcounter] = l; 
     stcounter++;
     }
-  for( j= 0; j<connections;j++){
+  for( j= 0; j<connections;j++){ /*ligacoes*/
     a = scanf("%d",&o);
     a = scanf("%d",&d);
     a = scanf("%d",&c);
@@ -197,27 +187,24 @@ int main(void) {
       transposed[j][i] = flows[i][j];
  
   int *visited;
+  /*dfs para encontrar as particoes da rede*/
   visited = (int *) calloc(numvertices, sizeof(int));
   DFS(transposed, visited,numvertices ,1);
 
-  /*for (i=0; i<numvertices;i++)
-   printf("visited: %d: %d\n", i,visited[i]);*/
-
-int *cutstations, *storedstations, st_c=0, lig_c=0;
-struct edge *cutedges;
-storedstations = (int *) calloc(e, sizeof(int));
-cutstations = (int *) calloc(e, sizeof(int));
-cutedges = (struct edge *) malloc(connections* sizeof(struct edge));
-for(i=0;i<connections;i++){
-  cutedges[i].x = 0;
-  cutedges[i].y = 0;
-}
+  int *cutstations, *storedstations, st_c=0, lig_c=0;
+  struct edge *cutedges;
+  storedstations = (int *) calloc(e, sizeof(int));
+  cutstations = (int *) calloc(e, sizeof(int));
+  cutedges = (struct edge *) malloc(connections* sizeof(struct edge));
+  for(i=0;i<connections;i++){
+    cutedges[i].x = 0;
+    cutedges[i].y = 0;
+  }
  
 
   for (i = 0; i < numvertices; i++) 
       for (j = 0; j < numvertices; j++) 
-         if (visited[i] != visited[j] && capacities[i][j] != 0){ /*if true , [i][j] faz parte do corte minimo*/
-          /*printf("mincut: %d -> %d\n", i,j);*/
+         if (visited[i] != visited[j] && capacities[i][j] != 0){ /*se passar a condicao, [i][j] faz parte do corte minimo*/
           if (j == i+e && i >= f+2 && i <= f+e+1){ /*estacao no corte minimo*/
             cutstations[st_c] = i;
             storedstations[i-f-2] = 1;
@@ -240,11 +227,11 @@ for(i=0;i<connections;i++){
           }
          }
 
-
+  /*ordenacao das listas a imprimir*/
   qsort(cutstations, e, sizeof(int), compare_function);
   qsort(cutedges,connections,sizeof(struct edge), compare_function_edge);
 
-
+  /*print das estacoes a aumentar*/
   int augmentstations=0;
   for(i=0;i<e-1;i++)
     if(cutstations[i] != 0){
@@ -256,6 +243,8 @@ for(i=0;i<connections;i++){
     augmentstations++;
   }
   if (augmentstations == 0) {printf("\n");}
+  
+  /*print das ligacoes a aumentar*/
   for(i=0;i<connections;i++)
     if(cutedges[i].x != 0)
       printf("%d %d\n",cutedges[i].x, cutedges[i].y);
@@ -264,6 +253,7 @@ for(i=0;i<connections;i++){
   free(visited);
   free(cutstations);
   free(cutedges);
+  free(storedstations);
   for (i=0;i< numvertices;i++){
       free(capacities[i]);
       free(flows[i]);
