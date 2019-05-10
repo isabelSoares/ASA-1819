@@ -203,8 +203,9 @@ int main(void) {
   /*for (i=0; i<numvertices;i++)
    printf("visited: %d: %d\n", i,visited[i]);*/
 
-int *cutstations, st_c=0, lig_c=0;
+int *cutstations, *storedstations, st_c=0, lig_c=0;
 struct edge *cutedges;
+storedstations = (int *) calloc(e, sizeof(int));
 cutstations = (int *) calloc(e, sizeof(int));
 cutedges = (struct edge *) malloc(connections* sizeof(struct edge));
 for(i=0;i<connections;i++){
@@ -215,18 +216,19 @@ for(i=0;i<connections;i++){
 
   for (i = 0; i < numvertices; i++) 
       for (j = 0; j < numvertices; j++) 
-         if ((visited[i] == 1 && visited[j] == 0 && capacities[i][j] != 0) || (visited[j] == 1 && visited[i] == 0 && capacities[i][j] != 0)){ /*if true , [i][j] faz parte do corte minimo*/
+         if (visited[i] != visited[j] && capacities[i][j] != 0){ /*if true , [i][j] faz parte do corte minimo*/
           /*printf("mincut: %d -> %d\n", i,j);*/
           if (j == i+e && i >= f+2 && i <= f+e+1){ /*estacao no corte minimo*/
             cutstations[st_c] = i;
+            storedstations[i-f-2] = 1;
             st_c++;
           }
-          /*else if(i >= f+2 && i <= f+e+1 && j >= f+2 && j <= f+e+1){
-            cutedges[lig_c].x = i;
+          else if(i >= f+e+2 && j >= f+2 && j <= f+e+1 && storedstations[i-e-f-2] == 0){ /*ligacao de estacao para estacao*/
+            cutedges[lig_c].x = i-e;
             cutedges[lig_c].y = j;
             lig_c++;
-          }*/
-          else if(i >= f+e+2){ /*ligacao no corte minimo - auxiliar que envia */
+          }
+          else if(i >= f+e+2 && j == 1){ /*ligacao no corte minimo - auxiliar que envia */
             cutedges[lig_c].x = i-e;
             cutedges[lig_c].y = j;
             lig_c++;
@@ -237,16 +239,7 @@ for(i=0;i<connections;i++){
             lig_c++;
           }
          }
-/*
-  printf("cutstations\n");
-  for (i=0;i<e;i++){
-    printf("%d ", cutstations[i]);
-  }
-    printf("cutedges\n");
-  for (i=0;i<e;i++){
-    printf("%d %d\n", cutedges[i].x, cutedges[i].y);
-  }
-*/
+
 
   qsort(cutstations, e, sizeof(int), compare_function);
   qsort(cutedges,connections,sizeof(struct edge), compare_function_edge);
